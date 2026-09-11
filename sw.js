@@ -1,11 +1,13 @@
-const CACHE_NAME = 'speaker-cleaner-v1';
+const CACHE_NAME = 'speaker-cleaner-v2';
+;
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icon-180.png',
-  './icon-192.png',
-  './icon-512.png'
+  './IMG_1785.png',
+  './IMG_1786.png',
+  './IMG_1787.png'
+
 ];
 
 self.addEventListener('install', (event) => {
