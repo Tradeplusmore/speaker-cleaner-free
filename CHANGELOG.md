@@ -4,6 +4,23 @@ Tutte le modifiche rilevanti a questo progetto sono documentate in questo file.
 
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.0.0/) e il versionamento segue [Semver](https://semver.org/).
 
+## [3.0.0] - 2026-09-12
+
+### Added
+
+- Progetto Capacitor in `ios-app/` per la conversione della PWA in app nativa iOS.
+- Feedback aptico (Core Haptics) in modalita nativa: avvio pulizia, stop e salvataggio preset.
+- Audio in background a schermo bloccato tramite configurazione `AVAudioSession` in categoria playback.
+- Rilevamento dell'ambiente nativo (`window.Capacitor`) con fallback completo al browser.
+- Pipeline GitHub Actions `ios-build.yml` che compila l'.ipa in cloud su macOS, senza Mac locale.
+- Guida di installazione via sideload in `docs/INSTALL-IPHONE.md`.
+- Documento di design dell'app nativa in `docs/plans/`.
+
+### Changed
+
+- `app.js`: introdotto `isNative` e helper `haptic`/`hapticNotify` (no-op nel browser).
+- `README.md`: sezione dedicata all'app nativa e alla struttura aggiornata.
+
 ## [2.0.0] - 2026-09-11
 
 ### Added
