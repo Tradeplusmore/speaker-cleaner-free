@@ -16,10 +16,12 @@ document.querySelectorAll('#tabs button').forEach((b) => {
 
 /* Device / install notices */
 const isIPhone = /iPhone/i.test(navigator.userAgent);
+const isNative = typeof window !== 'undefined' && !!window.Capacitor;
 const isStandalone = window.navigator.standalone === true ||
   window.matchMedia('(display-mode: standalone)').matches;
 
 function showNotices() {
+  if (isNative) return;
   if (!isIPhone) document.getElementById('noticeDevice').style.display = 'block';
   if (isIPhone && !isStandalone && localStorage.getItem('sc_install_dismissed') !== '1') {
     document.getElementById('noticeInstall').style.display = 'block';
@@ -28,6 +30,16 @@ function showNotices() {
 function dismissInstall() {
   document.getElementById('noticeInstall').style.display = 'none';
   localStorage.setItem('sc_install_dismissed', '1');
+}
+
+/* native haptics via Capacitor, no-op in the browser */
+function haptic(style) {
+  const p = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics;
+  if (p) p.impact({ style }).catch(() => {});
+}
+function hapticNotify(kind) {
+  const p = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics;
+  if (p) p.notification({ type: kind }).catch(() => {});
 }
 
 /* ===== Audio engine (unified, cancellable) ===== */
@@ -97,6 +109,7 @@ function stopAll() {
   killNodes();
   stopMetro();
   releaseScreenLock();
+  haptic('light');
   if (tickId) { clearInterval(tickId); tickId = null; }
   if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
   document.getElementById('nowbar').classList.remove('on');
@@ -154,6 +167,7 @@ function startGraph(duration, label, build, canvasId) {
   rafId = null;
   draw();
   keepScreenAwake();
+  haptic('medium');
 }
 
 /* node builders: create the audio graph without touching token or timers */
@@ -541,6 +555,7 @@ function savePreset() {
   const p = JSON.parse(localStorage.getItem('sc_presets') || '[]');
   p.push({ name, f, w, d });
   localStorage.setItem('sc_presets', JSON.stringify(p));
+  hapticNotify('success');
   alert('Preset salvato');
 }
 
