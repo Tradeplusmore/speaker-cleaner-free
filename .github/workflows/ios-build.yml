@@ -9,6 +9,7 @@ on:
       - 'index.html'
       - 'app.js'
       - 'manifest.json'
+      - 'sw.js'
       - 'IMG_*.png'
       - '.github/workflows/ios-build.yml'
 
