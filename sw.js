@@ -1,4 +1,4 @@
-const CACHE_NAME = 'speaker-cleaner-v8';
+const CACHE_NAME = 'speaker-cleaner-v9';
 const ASSETS = [
   './',
   './index.html',

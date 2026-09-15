@@ -11,6 +11,7 @@ document.querySelectorAll('#tabs button').forEach((b) => {
     b.classList.add('active');
     document.getElementById(b.dataset.view).classList.add('active');
     if (b.dataset.view === 'records') renderRecords();
+    if (b.dataset.view === 'settings') diagRefresh();
   };
 });
 
@@ -60,14 +61,16 @@ function getCtx() {
     const Ctx = window.AudioContext || window.webkitAudioContext;
     ctx = new Ctx();
   }
-  if (ctx.state === 'suspended') return ctx.resume().then(() => ctx);
+  if (ctx.state === 'suspended' || ctx.state === 'interrupted') return ctx.resume().then(() => ctx);
   return Promise.resolve(ctx);
 }
 
 /* iOS WKWebView: unlock the AudioContext inside a real touch gesture */
 function unlockAudioOnTouch() {
-  document.addEventListener('touchstart', () => { getCtx(); }, { once: true, passive: true });
-  document.addEventListener('click', () => { getCtx(); }, { once: true, passive: true });
+  const unlock = () => { getCtx(); };
+  document.addEventListener('touchstart', unlock, { passive: true });
+  document.addEventListener('touchend', unlock, { passive: true });
+  document.addEventListener('click', unlock);
 }
 
 function startHapticLoop() {
@@ -120,7 +123,9 @@ function releaseScreenLock() {
 }
 
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && activeCanvas) keepScreenAwake();
+  if (document.visibilityState !== 'visible') return;
+  getCtx();
+  if (activeCanvas) keepScreenAwake();
 });
 
 function stopAll() {
@@ -294,9 +299,8 @@ function pulse(freq, duration, label) {
 
 /* Wave: alterna due frequenze ogni 1.5 s — varia i nodi di pressione
    cosi l'acqua non si stabilizza nei punti fermi dell'onda */
-function wave(freqA, freqB, duration, label) {
-  stopAll();
-  startGraph(duration, label, (c, d) => {
+function buildWave(freqA, freqB, duration) {
+  return (c, d) => {
     const o = c.createOscillator();
     o.type = 'sine';
     const t0 = c.currentTime;
@@ -308,7 +312,23 @@ function wave(freqA, freqB, duration, label) {
     o.connect(d);
     o.start();
     nodes.push(o);
-  });
+  };
+}
+
+function wave(freqA, freqB, duration, label) {
+  stopAll();
+  startGraph(duration, label, buildWave(freqA, freqB, duration));
+}
+
+/* Super Deep: ciclo completo Wave, Risonanza, Dust e Acuti */
+function superDeep() {
+  stopAll();
+  const my = token;
+  logHistory();
+  startGraph(20, 'Super 1/4 — Wave', buildWave(150, 220, 20));
+  later(() => { if (my !== token) return; startGraph(20, 'Super 2/4 — Risonanza', buildSweep(80, 400, 20)); }, 20500);
+  later(() => { if (my !== token) return; startGraph(20, 'Super 3/4 — Dust', buildSweep(100, 1000, 20)); }, 41000);
+  later(() => { if (my !== token) return; startGraph(15, 'Super 4/4 — Acuti', buildSweep(8000, 16000, 15)); }, 61500);
 }
 
 /* Dust a step: burst a frequenze crescenti con 1 s di pausa —
@@ -607,6 +627,25 @@ function stopAnalyzer() {
   const b = document.getElementById('anBtn');
   b.innerText = 'Avvia analisi';
   b.classList.replace('b-red', 'b-go');
+}
+
+/* diagnostica audio: stato del contesto e beep di prova */
+async function diagRefresh() {
+  const el = document.getElementById('diagRead');
+  if (!el) return;
+  try {
+    const c = await getCtx();
+    const hasHap = !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics);
+    el.innerHTML = `AudioContext: <b>${c.state}</b> · Nativo: <b>${isNative ? 'si' : 'no'}</b> · Aptica: <b>${hasHap ? 'si' : 'no'}</b> · ${c.sampleRate} Hz`;
+  } catch (e) {
+    el.innerText = 'Audio non disponibile in questo browser.';
+  }
+}
+
+async function diagBeep() {
+  stopAll();
+  await startGraph(1, 'Beep di prova', buildTone(880, 'sine', 0));
+  diagRefresh();
 }
 
 /* presets + records */

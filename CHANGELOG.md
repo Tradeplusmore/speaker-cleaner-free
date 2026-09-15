@@ -4,6 +4,20 @@ Tutte le modifiche rilevanti a questo progetto sono documentate in questo file.
 
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.0.0/) e il versionamento segue [Semver](https://semver.org/).
 
+## [3.2.0] - 2026-09-15
+
+### Added
+
+- Sonic 18 kHz (30 s) e sweep acuti 8→16 kHz (20 s) per la polvere fine con micro-vibrazioni veloci.
+- Sub Bass 50 Hz (20 s) e Super Deep Clean (77 s): ciclo Wave, Risonanza, Dust e Acuti in sequenza.
+- Diagnostica audio in Opzioni: stato AudioContext, ambiente nativo, aptica, sample rate e beep di prova da 1 s.
+
+### Fixed
+
+- `getCtx()`: gestito anche lo stato `interrupted` di iOS (ripresa mai tentata, possibile silenzio permanente).
+- Sblocco audio persistente a ogni tocco invece che una sola volta; ripresa del contesto al ritorno in foreground.
+- Stato diagnostico aggiornato automaticamente aprendo la scheda Opzioni.
+
 ## [3.1.0] - 2026-09-15
 
 ### Added

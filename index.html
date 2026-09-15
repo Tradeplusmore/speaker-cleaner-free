@@ -129,6 +129,14 @@ canvas.spec{width:100%;height:90px;background:var(--bg);border-radius:10px;margi
       <p class="hint">Wave e Risonanza muovono la membrana al massimo dell'escursione: e l'unico meccanismo fisico reale di espulsione. Dust Step alterna burst e pause. La capsula usa volume auto-ridotto: avvicina l'orecchio allo speaker superiore.</p>
     </div>
     <div class="card">
+      <h2>Acuti e Super Deep<small>Micro-vibrazioni veloci e ciclo completo</small></h2>
+      <button class="b-pink" onclick="guard(()=>doClean(()=>tone(18000,'sine',30,0,'Sonic 18 kHz')))">Sonic 18 kHz (30 s)</button>
+      <button class="b-dust" onclick="guard(()=>doClean(()=>sweep(8000,16000,20,'Sweep acuti 8→16 kHz')))">Sweep acuti 8 → 16 kHz (20 s)</button>
+      <button class="b-bass" onclick="guard(()=>doClean(()=>tone(50,'sine',20,0,'Sub Bass 50 Hz')))">Sub Bass 50 Hz (20 s)</button>
+      <button class="b-deep" onclick="guard(()=>superDeep())">Super Deep Clean (77 s)</button>
+      <p class="hint">Sonic e sweep acuti lavorano sulla polvere fine con micro-vibrazioni veloci. Super Deep unisce Wave, Risonanza, Dust e Acuti in un unico ciclo.</p>
+    </div>
+    <div class="card">
       <h2>Personalizzata</h2>
       <label>Frequenza: <span class="val" id="fVal">440</span> Hz</label>
       <input type="range" id="fSlider" min="20" max="20000" value="440" oninput="document.getElementById('fVal').innerText=this.value">
@@ -244,6 +252,15 @@ canvas.spec{width:100%;height:90px;background:var(--bg);border-radius:10px;margi
       <h2>App</h2>
       <button class="b-test" onclick="updatePWA()">Aggiorna l'app (svuota cache)</button>
       <p class="hint">Da usare dopo aver caricato una nuova versione sul repository.</p>
+    </div>
+    <div class="card">
+      <h2>Diagnostica audio<small>Se non senti nulla, leggi qui</small></h2>
+      <div class="readout" id="diagRead">Stato: —</div>
+      <div class="row">
+        <button class="b-go" onclick="diagBeep()">Beep di prova (1 s)</button>
+        <button class="b-test" onclick="diagRefresh()">Aggiorna stato</button>
+      </div>
+      <p class="hint">AudioContext deve dire <b>running</b>. Se dice suspended o interrupted, tocca di nuovo il Beep. Controlla anche: interruttore silenzioso disinserito, volume di sistema alto, nessun Bluetooth collegato, cover rimossa.</p>
     </div>
     <div class="card">
       <h2>Nota onesta sui limiti</h2>
