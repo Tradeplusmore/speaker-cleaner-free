@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Speaker Cleaner Free</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SpeakerClean">
+<link rel="apple-touch-icon" sizes="180x180" href="IMG_1785.png">
+<link rel="icon" type="image/png" sizes="192x192" href="IMG_1786.png">
+<link rel="icon" type="image/png" sizes="512x512" href="IMG_1787.png">
+<script src="app.js" defer></script>
+<style>
+:root{color-scheme:dark;--bg:#000;--card:#1c1c1e;--card2:#2c2c2e;--txt:#f5f5f7;--dim:#8e8e93;--acc:#0a84ff;--line:#38383a;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;}
+header{padding:calc(14px + env(safe-area-inset-top)) 20px 6px;text-align:center;}
+header h1{font-size:1.3rem;font-weight:700;margin:0;letter-spacing:-0.02em;}
+header p{color:var(--dim);font-size:0.82rem;margin:4px 0 0;font-weight:400;}
+main{padding:6px 16px 120px;max-width:480px;margin:0 auto;}
+.notice{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 14px;margin-bottom:12px;font-size:0.84rem;line-height:1.4;color:var(--txt);display:none;}
+.notice.warn{background:#2a1c0a;border-color:#6b521f;}
+.notice.ios{background:#0a2a1a;border-color:#1f6b3d;}
+.notice button{width:auto;margin:8px 0 0;padding:7px 14px;font-size:0.8rem;background:var(--acc);color:#fff;border:none;border-radius:9px;font-weight:600;}
+.view{display:none;}.view.active{display:block;}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;}
+.card h2{font-size:1.02rem;margin:0 0 10px;color:var(--txt);font-weight:600;letter-spacing:-0.01em;}
+.card h2 small{display:block;color:var(--dim);font-weight:400;font-size:0.78rem;margin-top:3px;}
+button{width:100%;padding:13px;margin:6px 0;border:none;border-radius:12px;font-size:0.97rem;font-weight:600;cursor:pointer;transition:.12s;color:#fff;background:var(--card2);-webkit-touch-callout:none;}
+button:active{transform:scale(.97);opacity:.85;}
+.b-water{background:#0a84ff;color:#fff;}.b-dust{background:#ff9f0a;color:#000;}.b-bass{background:#5e5ce6;color:#fff;}
+.b-quick{background:#64d2ff;color:#000;}.b-deep{background:#bf5af2;color:#fff;}.b-pink{background:#ff375f;color:#fff;}
+.b-test{background:#2c2c2e;color:#f5f5f7;}.b-warn{background:#ffd60a;color:#000;}.b-go{background:#30d158;color:#000;}.b-red{background:#ff453a;color:#fff;}
+.row{display:flex;gap:8px;}.row button{flex:1;margin:6px 0;}
+label{display:block;font-size:0.82rem;margin:10px 0 3px;color:#c7c7cf;}
+input[type=range]{width:100%;accent-color:var(--acc);}
+select{width:100%;padding:11px;border-radius:10px;background:#2c2c2e;color:#f5f5f7;border:1px solid var(--line);font-size:0.95rem;appearance:none;}
+input[type=text],input[type=number]{width:100%;padding:11px;border-radius:10px;background:var(--bg);color:#f5f5f7;border:1px solid var(--line);font-size:0.95rem;}
+.val{color:var(--acc);font-weight:600;}
+.hint{font-size:0.75rem;color:var(--dim);margin:6px 0 0;line-height:1.4;}
+.warn{font-size:0.75rem;color:#ff9f0a;margin:8px 0 0;line-height:1.4;}
+canvas.scope{width:100%;height:56px;background:var(--bg);border-radius:10px;margin-top:10px;display:block;}
+canvas.spec{width:100%;height:90px;background:var(--bg);border-radius:10px;margin-top:8px;display:block;}
+.readout{font-size:0.85rem;text-align:center;margin-top:8px;color:var(--acc);min-height:20px;}
+.diag{font-size:0.8rem;text-align:center;margin-top:8px;color:#ffd60a;min-height:18px;}
+.item{background:var(--card2);border-radius:12px;padding:10px 12px;margin:6px 0;display:flex;align-items:center;gap:10px;font-size:0.84rem;}
+.item .g{flex:1;}.item button{width:auto;margin:0;padding:8px 12px;font-size:0.8rem;}
+.empty{color:var(--dim);font-size:0.8rem;text-align:center;padding:8px 0;}
+#nowbar{position:fixed;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));display:none;padding:0 12px;z-index:6;}
+#nowbar.on{display:block;}
+#nowbar .inner{max-width:480px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:12px;}
+#nowbar .txt{flex:1;font-size:0.78rem;line-height:1.25;}#nowbar .txt b{color:var(--acc);}
+#nowbar .stop{width:auto;margin:0;padding:10px 18px;background:#ff453a;border-radius:10px;}
+#tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:#1c1c1e;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5;}
+#tabs button{flex:1;background:none;border:none;color:var(--dim);font-size:0.64rem;font-weight:500;padding:9px 0 8px;margin:0;border-radius:0;display:flex;flex-direction:column;align-items:center;gap:2px;}
+#tabs button.active{color:var(--acc);}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:24px;z-index:20;}
+#modal.on{display:flex;}
+#modal .box{background:var(--card);border-radius:18px;padding:22px;max-width:400px;width:100%;}
+#modal h3{margin:0 0 10px;font-size:1.1rem;}
+#modal ul{padding-left:18px;margin:0 0 14px;font-size:0.85rem;color:#d7d7df;line-height:1.5;}
+#modal .chk{display:flex;align-items:flex-start;gap:10px;font-size:0.85rem;margin-bottom:14px;color:#d7d7df;}
+#modal .chk input{width:20px;height:20px;margin-top:1px;accent-color:#30d158;flex:0 0 auto;}
+#modal .b-go:disabled{opacity:.4;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Speaker Cleaner</h1>
+  <p>Pulizia, test e laboratorio audio per iPhone — 100% locale</p>
+</header>
+
+<main>
+  <div class="notice warn" id="noticeDevice">Questa app e ottimizzata e supportata solo su iPhone.</div>
+  <div class="notice ios" id="noticeInstall">Per installarla: tocca Condividi, poi Aggiungi a Home.<button onclick="dismissInstall()">OK</button></div>
+
+  <!-- ===== HOME ===== -->
+  <section id="home" class="view active">
+    <div class="card">
+      <h2>Pulizia rapida</h2>
+      <button class="b-water" onclick="guard(()=>doClean(()=>tone(165,'sine',30,0,'Water Eject 165 Hz')))">Water Eject — 165 Hz (30 s)</button>
+      <div class="row">
+        <button class="b-quick" onclick="doClean(()=>tone(165,'sine',10,0,'Quick Clean'))">Quick Clean (10 s)</button>
+        <button class="b-deep" onclick="guard(()=>deepClean())">Deep Clean (60 s)</button>
+      </div>
+      <p class="hint">Alza il volume di sistema al massimo e tieni lo speaker rivolto verso il basso. Il volume interno puo solo ridurre, non superare quello di iOS.</p>
+      <canvas class="scope" id="vizHome"></canvas>
+    </div>
+    <div class="card">
+      <h2>Volume interno<small>Attenuazione dell'app, indipendente dai tasti fisici</small></h2>
+      <label>Livello: <span class="val" id="volVal">90</span>%</label>
+      <input type="range" id="vol" min="10" max="100" value="90" oninput="setVol(this.value)">
+    </div>
+  </section>
+
+  <!-- ===== CLEAN ===== -->
+  <section id="clean" class="view">
+    <div class="card">
+      <h2>Water Eject — preset</h2>
+      <div class="row">
+        <button class="b-water" onclick="guard(()=>doClean(()=>tone(150,'sine',30,0,'Water Eject 150 Hz')))">150 Hz</button>
+        <button class="b-water" onclick="guard(()=>doClean(()=>tone(165,'sine',30,0,'Water Eject 165 Hz')))">165 Hz</button>
+      </div>
+      <div class="row">
+        <button class="b-water" onclick="guard(()=>doClean(()=>tone(180,'sine',30,0,'Water Eject 180 Hz')))">180 Hz</button>
+        <button class="b-water" onclick="guard(()=>doClean(()=>tone(200,'sine',30,0,'Water Eject 200 Hz')))">200 Hz</button>
+      </div>
+      <button class="b-water" onclick="guard(()=>doClean(()=>sweep(150,230,30,'Sweep adattivo 150→230 Hz')))">Sweep adattivo 150–230 Hz</button>
+      <button class="b-water" onclick="guard(()=>doClean(()=>pulse(165,30,'Pulse 165 Hz')))">Pulse mode 165 Hz (30 s)</button>
+    </div>
+    <div class="card">
+      <h2>Polvere e bassi</h2>
+      <button class="b-dust" onclick="doClean(()=>sweep(100,1000,20,'Dust Sweep 100Hz→1kHz'))">Dust Sweep 100 Hz → 1 kHz</button>
+      <button class="b-pink" onclick="doClean(()=>noise('pink',20,'Pink Noise Dust Clean'))">Pink Noise (20 s)</button>
+      <button class="b-bass" onclick="guard(()=>doClean(()=>tone(35,'sine',20,0,'Bass Clean 35 Hz')))">Bass Clean 35 Hz</button>
+    </div>
+    <div class="card">
+      <h2>Personalizzata</h2>
+      <label>Frequenza: <span class="val" id="fVal">440</span> Hz</label>
+      <input type="range" id="fSlider" min="20" max="20000" value="440" oninput="document.getElementById('fVal').innerText=this.value">
+      <label>Forma d'onda</label>
+      <select id="wave"><option value="sine">Sine</option><option value="square">Square</option><option value="triangle">Triangle</option><option value="sawtooth">Sawtooth</option></select>
+      <label>Durata: <span class="val" id="dVal">15</span> s</label>
+      <input type="range" id="dSlider" min="5" max="60" value="15" oninput="document.getElementById('dVal').innerText=this.value">
+      <button class="b-water" onclick="playCustom()">Riproduci</button>
+      <button class="b-test" onclick="savePreset()">Salva come preset</button>
+      <p class="warn">Attenzione: le frequenze acute ad alto volume danno fastidio. Parti da un volume interno basso.</p>
+    </div>
+  </section>
+
+  <!-- ===== TEST ===== -->
+  <section id="test" class="view">
+    <div class="card">
+      <h2>Test speaker / cuffie</h2>
+      <button class="b-test" onclick="tone(1000,'sine',3,0,'Mono 1 kHz')">Mono 1 kHz</button>
+      <div class="row">
+        <button class="b-test" onclick="tone(1000,'sine',3,-1,'Canale sinistro')">Sinistro</button>
+        <button class="b-test" onclick="tone(1000,'sine',3,1,'Canale destro')">Destro</button>
+      </div>
+      <button class="b-test" onclick="altLR()">Alternato L / R (8 s)</button>
+      <p class="hint">Sugli speaker fisici dell'iPhone i canali L/R possono non separarsi: il test e piu affidabile con cuffie o AirPods.</p>
+    </div>
+    <div class="card">
+      <h2>Sweep di risposta<small>Cerca vibrazioni, fruscii, rattling</small></h2>
+      <button class="b-test" onclick="sweep(30,200,12,'Bass sweep 30→200 Hz')">Bass 30 → 200 Hz</button>
+      <button class="b-test" onclick="sweep(200,2000,12,'Mid sweep')">Mid 200 Hz → 2 kHz</button>
+      <button class="b-test" onclick="sweep(2000,12000,12,'Treble sweep')">Treble 2 → 12 kHz</button>
+    </div>
+    <div class="card">
+      <h2>Livello microfono<small>Indicatore ambientale, non diagnostica lo speaker</small></h2>
+      <button class="b-warn" onclick="micLevel()">Misura 5 secondi</button>
+      <div class="diag" id="micDiag">Misura il livello sonoro captato dal microfono.</div>
+    </div>
+    <div class="card">
+      <h2>Hearing self-check<small>Autovalutazione soggettiva, non e un test medico</small></h2>
+      <label>Orecchio</label>
+      <select id="hcEar"><option value="0">Entrambi</option><option value="-1">Sinistro</option><option value="1">Destro</option></select>
+      <div class="row"><button class="b-test" onclick="hc(250)">250 Hz</button><button class="b-test" onclick="hc(500)">500 Hz</button><button class="b-test" onclick="hc(1000)">1 kHz</button></div>
+      <div class="row"><button class="b-test" onclick="hc(2000)">2 kHz</button><button class="b-test" onclick="hc(4000)">4 kHz</button><button class="b-test" onclick="hc(8000)">8 kHz</button></div>
+      <p class="warn">Usa le cuffie a volume moderato. Se non senti una frequenza non allarmarti: dipende molto da cuffie e ambiente. Per dubbi reali rivolgiti a un audiologo.</p>
+    </div>
+  </section>
+
+  <!-- ===== LAB ===== -->
+  <section id="lab" class="view">
+    <div class="card">
+      <h2>Generatore di toni</h2>
+      <label>Frequenza: <span class="val" id="gfVal">440</span> Hz</label>
+      <input type="range" id="gf" min="20" max="20000" value="440" oninput="document.getElementById('gfVal').innerText=this.value">
+      <label>Forma d'onda</label>
+      <select id="gw"><option value="sine">Sine</option><option value="square">Square</option><option value="triangle">Triangle</option><option value="sawtooth">Sawtooth</option></select>
+      <button class="b-water" onclick="labTone()">Suona (continuo)</button>
+    </div>
+    <div class="card">
+      <h2>Rumore</h2>
+      <div class="row">
+        <button class="b-test" onclick="noise('white',3600,'White noise')">White</button>
+        <button class="b-pink" onclick="noise('pink',3600,'Pink noise')">Pink</button>
+        <button class="b-bass" onclick="noise('brown',3600,'Brown noise')">Brown</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Sweep configurabile</h2>
+      <label>Da <span class="val" id="s1v">100</span> Hz a <span class="val" id="s2v">8000</span> Hz</label>
+      <input type="range" id="s1" min="20" max="20000" value="100" oninput="document.getElementById('s1v').innerText=this.value">
+      <input type="range" id="s2" min="20" max="20000" value="8000" oninput="document.getElementById('s2v').innerText=this.value">
+      <label>Durata: <span class="val" id="sdv">10</span> s</label>
+      <input type="range" id="sd" min="2" max="60" value="10" oninput="document.getElementById('sdv').innerText=this.value">
+      <button class="b-water" onclick="labSweep()">Avvia sweep</button>
+    </div>
+    <div class="card">
+      <h2>Metronomo</h2>
+      <label>BPM: <span class="val" id="bpmVal">120</span></label>
+      <input type="range" id="bpm" min="40" max="240" value="120" oninput="document.getElementById('bpmVal').innerText=this.value; bpm=+this.value">
+      <button class="b-go" id="metroBtn" onclick="toggleMetro()">Avvia metronomo</button>
+    </div>
+    <div class="card">
+      <h2>Analizzatore live (microfono)</h2>
+      <button class="b-go" id="anBtn" onclick="toggleAnalyzer()">Avvia analisi</button>
+      <canvas class="scope" id="anScope"></canvas>
+      <canvas class="spec" id="anSpec"></canvas>
+      <div class="readout" id="anRead">RMS e frequenza dominante appariranno qui.</div>
+      <p class="hint">L'analizzatore resta indipendente: puoi avviarlo e poi suonare un tono per osservarne la risposta captata dal microfono.</p>
+    </div>
+  </section>
+
+  <!-- ===== RECORDS ===== -->
+  <section id="records" class="view">
+    <div class="card">
+      <h2>I miei preset</h2>
+      <div id="presetList"><div class="empty">Nessun preset salvato. Creane uno dalla scheda Clean.</div></div>
+    </div>
+    <div class="card">
+      <h2>Cronologia sessioni</h2>
+      <div id="histList"><div class="empty">Nessuna sessione registrata.</div></div>
+      <button class="b-red" onclick="clearHist()">Svuota cronologia</button>
+    </div>
+    <div class="card">
+      <h2>Backup dati</h2>
+      <button class="b-test" onclick="exportData()">Esporta tutto (JSON)</button>
+      <label style="margin-top:10px;">Importa un backup:</label>
+      <input type="file" id="importFile" accept="application/json" onchange="importData(event)">
+      <p class="hint">Il file contiene preset, cronologia e impostazioni. Nulla lascia il dispositivo.</p>
+    </div>
+  </section>
+
+  <!-- ===== SETTINGS ===== -->
+  <section id="settings" class="view">
+    <div class="card">
+      <h2>App</h2>
+      <button class="b-test" onclick="updatePWA()">Aggiorna l'app (svuota cache)</button>
+      <p class="hint">Da usare dopo aver caricato una nuova versione sul repository.</p>
+    </div>
+    <div class="card">
+      <h2>Nota onesta sui limiti</h2>
+      <p class="hint">Questi toni aiutano a smuovere acqua superficiale o residui leggeri, come il Water Lock di Apple Watch. Non riparano danni da liquidi, corrosione, sale o membrane rovinate, e nessuna app puo rilevare con certezza acqua nello speaker. Per danni seri servono silica gel o assistenza tecnica. Una PWA non puo conoscere il percorso audio di sistema, controllare il volume iOS, ne usare vibrazione, Siri o widget.</p>
+    </div>
+    <div class="card">
+      <h2>Privacy</h2>
+      <p class="hint">Tutto e locale. Il microfono si attiva solo quando lo avvii tu; nulla viene registrato o inviato online.</p>
+    </div>
+  </section>
+</main>
+
+<div id="nowbar"><div class="inner"><div class="txt" id="nowtxt"></div><button class="stop" onclick="stopAll()">Stop</button></div></div>
+
+<nav id="tabs">
+  <button class="active" data-view="home">Home</button>
+  <button data-view="clean">Clean</button>
+  <button data-view="test">Test</button>
+  <button data-view="lab">Lab</button>
+  <button data-view="records">Dati</button>
+  <button data-view="settings">Opzioni</button>
+</nav>
+
+<div id="modal"><div class="box">
+  <h3>Prima di iniziare</h3>
+  <ul><li>Togli cover o pellicole sullo speaker.</li><li>Speaker rivolto <b>verso il basso</b>.</li><li>Volume di sistema al massimo.</li><li>Interrompi se senti distorsione anomala.</li><li>Per pulizie lunghe imposta Blocco automatico su Mai (Impostazioni &gt; Schermo e luminosita).</li></ul>
+  <label class="chk"><input type="checkbox" id="chkHead" onchange="document.getElementById('goBtn').disabled=!this.checked"> Confermo di <b>non</b> indossare cuffie o AirPods.</label>
+  <button class="b-go" id="goBtn" disabled onclick="modalGo()">Avvia</button>
+  <button class="b-test" onclick="closeModal()">Annulla</button>
+</div></div>
+
+</body>
+</html>

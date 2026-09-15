@@ -1,0 +1,31 @@
+{
+  "name": "Speaker Cleaner Free",
+  "short_name": "SpeakerClean",
+  "description": "Pulisci e testa gli speaker del tuo iPhone con toni calibrati: Water Eject, Dust Sweep, test canali e laboratorio audio.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "IMG_1785.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "IMG_1786.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "IMG_1787.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

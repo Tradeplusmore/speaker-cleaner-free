@@ -1,0 +1,24 @@
+{
+  "name": "speaker-cleaner-ios",
+  "version": "3.0.1",
+  "private": true,
+  "description": "App nativa iOS di Speaker Cleaner (Capacitor)",
+  "scripts": {
+    "build:web": "node scripts/copy-web.mjs",
+    "add:ios": "npx cap add ios",
+    "configure:ios": "node scripts/configure-ios.mjs",
+    "assets:ios": "npx @capacitor/assets generate --ios --iconBackgroundColor=#000000 --iconBackgroundColorDark=#000000 --splashBackgroundColor=#000000 --splashBackgroundColorDark=#000000",
+    "sync:ios": "npx cap sync ios",
+    "build:ipa": "npm run build:web && npm run add:ios && npm run configure:ios && npm run assets:ios && npm run sync:ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0",
+    "@capacitor/ios": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "typescript": "^5.0.0"
+  }
+}

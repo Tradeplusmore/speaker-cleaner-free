@@ -1,0 +1,16 @@
+# Dipendenze
+ios-app/node_modules/
+ios-app/build/
+ios-app/ios/
+ios-app/www/
+ios-app/Pods/
+ios-app/*.ipa
+
+# macOS / Xcode
+.DS_Store
+*.xcuserdata/
+DerivedData/
+
+# Editor
+.vscode/
+*.log
