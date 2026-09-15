@@ -164,7 +164,7 @@ function draw() {
   rafId = requestAnimationFrame(draw);
 }
 
-async function startGraph(duration, label, build, canvasId) {
+async function startGraph(duration, label, build, canvasId, gainScale) {
   const c = await getCtx();
   killNodes();
   if (tickId) { clearInterval(tickId); tickId = null; }
@@ -172,7 +172,7 @@ async function startGraph(duration, label, build, canvasId) {
   analyser = c.createAnalyser();
   analyser.fftSize = 1024;
   const t = c.currentTime;
-  const v = vol();
+  const v = vol() * (gainScale || 1);
   const fade = Math.min(0.4, duration / 4);
   master.gain.setValueAtTime(0.0001, t);
   master.gain.exponentialRampToValueAtTime(v, t + fade);
@@ -290,6 +290,49 @@ function pulse(freq, duration, label) {
     o.start();
     nodes.push(o);
   });
+}
+
+/* Wave: alterna due frequenze ogni 1.5 s — varia i nodi di pressione
+   cosi l'acqua non si stabilizza nei punti fermi dell'onda */
+function wave(freqA, freqB, duration, label) {
+  stopAll();
+  startGraph(duration, label, (c, d) => {
+    const o = c.createOscillator();
+    o.type = 'sine';
+    const t0 = c.currentTime;
+    const half = 1.5;
+    const steps = Math.ceil(duration / half);
+    for (let s = 0; s < steps; s++) {
+      o.frequency.setValueAtTime(s % 2 ? freqB : freqA, t0 + s * half);
+    }
+    o.connect(d);
+    o.start();
+    nodes.push(o);
+  });
+}
+
+/* Dust a step: burst a frequenze crescenti con 1 s di pausa —
+   la pausa fa ricadere i residui smossi invece di risospenderli */
+function dustSteps() {
+  stopAll();
+  const my = token;
+  const seq = [[90, 8], [120, 8], [160, 8], [200, 8]];
+  let t = 0;
+  seq.forEach(([f, d], i) => {
+    const run = () => {
+      if (my !== token) return;
+      startGraph(d, `Dust Step ${i + 1}/4 — ${f} Hz`, buildTone(f, 'sine', 0));
+    };
+    if (t === 0) run(); else later(run, t * 1000);
+    t += d + 1;
+  });
+}
+
+/* Capsula auricolare: driver piccolo e fragile — tono medio a
+   guadagno ridotto (0.4), da ascoltare con l'orecchio vicino */
+function earpiece() {
+  stopAll();
+  startGraph(15, 'Capsula auricolare 880 Hz', buildTone(880, 'sine', 0), 'vizHome', 0.4);
 }
 
 /* sequences: a single stopAll at start, phases built directly via startGraph */

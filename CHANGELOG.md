@@ -4,6 +4,16 @@ Tutte le modifiche rilevanti a questo progetto sono documentate in questo file.
 
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.0.0/) e il versionamento segue [Semver](https://semver.org/).
 
+## [3.1.0] - 2026-09-15
+
+### Added
+
+- Modalita Wave 150↔220 Hz (30 s): alterna due frequenze ogni 1,5 s per variare i nodi di pressione.
+- Risonanza lenta 80→400 Hz (60 s): sweep lento nella zona di risonanza per la massima escursione della membrana.
+- Dust Step 90→200 Hz a step (36 s): burst da 8 s a 90/120/160/200 Hz separati da 1 s di pausa.
+- Capsula auricolare 880 Hz (15 s): tono a guadagno ridotto (0.4) per il driver piccolo dello speaker superiore.
+- `startGraph`: nuovo parametro `gainScale` per attenuare singole modalita senza toccare il volume utente.
+
 ## [3.0.1] - 2026-09-15
 
 ### Fixed
